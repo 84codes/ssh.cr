@@ -1,0 +1,9 @@
+name: ssh
+version: 0.1.0
+
+authors:
+  - Carl Hörberg <carl@84codes.com>
+
+crystal: 1.6.0
+
+license: MIT
