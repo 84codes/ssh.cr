@@ -1,10 +1,18 @@
-# SSH
+# SSH.cr
 
-Crystal bindings to [libssh](https://www.libssh.org/)
+SSH client in [Crystal](https://crystal-lang.org) and bindings for [LibSSH](https://www.libssh.org/).
 
 ## Installation
 
-1. Add the dependency to your `shard.yml`:
+1. Install libssh development headers:
+
+```sh
+apt install libssh-dev
+# or
+dnf install libssh-devel
+```
+
+2. Add the dependency to your `shard.yml`:
 
    ```yaml
    dependencies:
@@ -12,7 +20,8 @@ Crystal bindings to [libssh](https://www.libssh.org/)
        github: 84codes/ssh.cr
    ```
 
-2. Run `shards install`
+3. Run `shards install`
+
 
 ## Usage
 
@@ -47,11 +56,11 @@ end
 
 ## Development
 
-TODO: Write development instructions here
+The specs requires you to run a local sshd server instance, which requires sudo to be run. That's why you're asked for your password when running specs.
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/ssh.cr/fork>)
+1. Fork it (<https://github.com/84codes/ssh.cr/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -59,4 +68,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Carl Hörberg](https://github.com/your-github-user) - creator and maintainer
+- [Carl Hörberg](https://github.com/carlhoerberg) - creator and maintainer
