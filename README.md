@@ -48,7 +48,8 @@ SSH.open("localhost", "root", 22) do |ssh|
     end
     ch.exec("cat")
     ch.puts "hello world"
-    ch.wait
+    ch.eof! # closes stdin on the server side
+    ch.wait # wait for the channel to close
     puts "Exited with status: #{ch.exit_status}"
   end
 end
