@@ -3,19 +3,21 @@ require "./libssh"
 
 # SSH client
 class SSH
-  def initialize(host : String, user : String, port = 22,
-                 @socket = TCPSocket.new(host, port))
+  def initialize(@host : String, @user : String, @port = 22,
+                 @socket = TCPSocket.new(host, port, connect_timeout: 5))
     fd = @socket.fd
     @session = LibSSH.ssh_new || raise Error.new("Could not create a session")
     LibSSH.ssh_set_blocking(@session, false)
     LibSSH.ssh_options_set(@session, LibSSH::Options::FD, pointerof(fd))
-    LibSSH.ssh_options_set(@session, LibSSH::Options::HOST, host)
-    LibSSH.ssh_options_set(@session, LibSSH::Options::PORT, pointerof(port))
-    LibSSH.ssh_options_set(@session, LibSSH::Options::USER, user)
+    LibSSH.ssh_options_set(@session, LibSSH::Options::HOST, @host)
+    LibSSH.ssh_options_set(@session, LibSSH::Options::PORT, pointerof(@port))
+    LibSSH.ssh_options_set(@session, LibSSH::Options::USER, @user)
     connect
     verify_host_key
     authenticate
   end
+
+  getter host, user, port
 
   def self.open(host, user, port = 22)
     ssh = self.new(host, user, port)
