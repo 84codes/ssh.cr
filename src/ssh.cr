@@ -135,6 +135,11 @@ class SSH
           state = Box(ChannelState).unbox(userdata)
           state.exit_signal = String.new(signal)
         end
+      @cb.channel_close_function =
+        ->(_s : LibSSHSession*, _ch : LibSSHChannel*, userdata : Void*) do
+          state = Box(ChannelState).unbox(userdata)
+          state.closed = true
+        end
       set_callbacks
       open_session
     end
@@ -245,6 +250,7 @@ class SSH
       property on_data
       property exit_status : Int32?
       property exit_signal : String?
+      property? closed = false
     end
   end
 
