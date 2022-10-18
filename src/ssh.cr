@@ -12,6 +12,8 @@ class SSH
     LibSSH.ssh_options_set(@session, LibSSH::Options::HOST, @host)
     LibSSH.ssh_options_set(@session, LibSSH::Options::PORT, pointerof(@port))
     LibSSH.ssh_options_set(@session, LibSSH::Options::USER, @user)
+    process_config = false
+    LibSSH.ssh_options_set(@session, LibSSH::Options::PROCESS_CONFIG, pointerof(process_config))
     connect
     verify_host_key
     authenticate
