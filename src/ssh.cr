@@ -157,7 +157,14 @@ class SSH
     end
 
     def exit_status : Int32?
-      @state.exit_status
+      if es = @state.exit_status
+        return es
+      end
+      until @state.closed?
+        @ssh.wait_socket
+        es = LibSSH.ssh_channel_get_exit_status(@channel)
+        return es if es >= 0
+      end
     end
 
     def exit_signal : String?
