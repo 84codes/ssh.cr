@@ -8,6 +8,7 @@ lib LibSSH
   fun ssh_set_fd_toread(session : LibSSHSession*) : Void
   fun ssh_set_fd_towrite(session : LibSSHSession*) : Void
   fun ssh_options_set(session : LibSSHSession*, ssh_option : Options, value : Void*) : LibC::Int
+  fun ssh_options_get(session : LibSSHSession*, ssh_option : Options, value : LibC::Char**) : LibC::Int
   fun ssh_options_parse_config(session : LibSSHSession*, filename : LibC::Char*) : LibC::Int
   fun ssh_connect(session : LibSSHSession*) : LibC::Int
   fun ssh_disconnect(session : LibSSHSession*) : LibC::Int
@@ -31,6 +32,10 @@ lib LibSSH
   fun ssh_set_channel_callbacks(channel : LibSSHChannel*, cb : ChannelCallbacks*) : LibC::Int
   fun ssh_channel_poll(channel : LibSSHChannel*, is_stderr : Bool) : LibC::Int
   fun ssh_get_poll_flags(session : LibSSHSession*) : LibC::Int
+  fun ssh_set_callbacks(session : LibSSHSession*, cb : SSHCallbacks*) : LibC::Int
+  fun ssh_string_free_char(s : LibC::Char*) : Void
+  fun ssh_blocking_flush(session : LibSSHSession*, timeout : LibC::Int) : LibC::Int
+  fun ssh_send_ignore(session : LibSSHSession*, data : LibC::Char*) : LibC::Int
 
   OK    =    0 # No error
   ERROR =   -1 # Error of some kind
@@ -120,6 +125,17 @@ lib LibSSH
     REQUEST_DENIED
     FATAL
     EINTR
+  end
+
+  struct SSHCallbacks
+    size : LibC::SizeT
+    userdata : Void*
+    auth_function : Void*
+    log_function : Proc(LibSSHSession*, LibC::Int, LibC::Char*, Void*, Void)
+    connect_status_function : Void*
+    global_request_function : Void*
+    channel_open_request_x11_function : Void*
+    channel_open_request_auth_agent_function : Void*
   end
 
   struct ChannelCallbacks
